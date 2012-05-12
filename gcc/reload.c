@@ -116,7 +116,6 @@ a register with any other reload.  */
 /* True if X is a constant that can be forced into the constant pool.  */
 #define CONST_POOL_OK_P(X)			\
   (CONSTANT_P (X)				\
-   && flag_constant_pools			\
    && GET_CODE (X) != HIGH			\
    && !targetm.cannot_force_const_mem (X))
 

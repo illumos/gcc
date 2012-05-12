@@ -855,7 +855,7 @@ See S/390 and zSeries Options.
 -finstrument-functions-exclude-file-list=@var{file},@var{file},@dots{} @gol
 -fno-common  -fno-ident @gol
 -fpcc-struct-return  -fpic  -fPIC -fpie -fPIE @gol
--fno-jump-tables -fno-constant-pools @gol
+-fno-jump-tables @gol
 -frecord-gcc-switches @gol
 -freg-struct-return  -fshort-enums @gol
 -fshort-double  -fshort-wchar @gol
@@ -15929,16 +15929,6 @@ of use in conjunction with @option{-fpic} or @option{-fPIC} for
 building code which forms part of a dynamic linker and cannot
 reference the address of a jump table.  On some targets, jump tables
 do not require a GOT and this option is not needed.
-
-@item -fno-constant-pools
-@opindex fno-constant-pools
-Do not put constants other than user-declared constant variables in
-pools in read-only memory even if this requires constants to be built
-up in registers and spilled to the stack.  This option is of use in
-conjunction with @option{-fpic} or @option{-fPIC} for building code
-which forms part of a dynamic linker and cannot reference the address
-of a constant pool.  It may not work reliably for all code or on all
-targets.
 
 @item -ffixed-@var{reg}
 @opindex ffixed

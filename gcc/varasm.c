@@ -3555,7 +3555,7 @@ force_const_mem (enum machine_mode mode, rtx x)
   void **slot;
 
   /* If we're not allowed to drop X into the constant pool, don't.  */
-  if (!flag_constant_pools || (*targetm.cannot_force_const_mem) (x))
+  if (targetm.cannot_force_const_mem (x))
     return NULL_RTX;
 
   /* Record that this function has used a constant pool entry.  */

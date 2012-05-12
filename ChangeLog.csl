@@ -14,18 +14,6 @@
 	ix86_emit_save_regs, ix86_emit_save_regs_using_mov,
 	ix86_expand_prologue, ix86_expand_epilogue): Handle -msave-args.
 
-2005-05-20  Joseph S. Myers  <joseph@codesourcery.com>
-
-	* gcc/common.opt (fconstant-pools): New.
-	* gcc/doc/invoke.texi (-fno-constant-pools): Document.
-	* gcc/flags.h (flag_constant_pools): New.
-	* gcc/opts.c (common_handle_option): Handle OPT_fconstant_pools.
-	* gcc/toplev.c (flag_constant_pools): New.
-	* gcc/varasm.c (force_const_mem): Return NULL_RTX for
-	-fno-constant-pools.
-	* gcc/reload.c (find_reloads): Do not try reloading a constant
-	from a constant pool if -fno-constant-pools.
-
 2005-05-19  Joseph S. Myers  <joseph@codesourcery.com>
 
 	* gcc/config/sparc/sparc.h (MASK_NO_INTEGER_LDD_STD,

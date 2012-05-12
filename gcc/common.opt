@@ -385,10 +385,6 @@ fconserve-stack
 Common Var(flag_conserve_stack) Optimization
 Do not perform optimizations increasing noticeably stack usage
 
-fconstant-pools
-Common Report Var(flag_constant_pools) Init(1)
-Put constants in pools in read-only memory if convenient
-
 fcprop-registers
 Common Report Var(flag_cprop_registers) Optimization
 Perform a register copy-propagation optimization pass
