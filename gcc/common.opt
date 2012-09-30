@@ -1076,6 +1076,11 @@ fcode-hoisting
 Common Report Var(flag_code_hoisting) Optimization
 Enable code hoisting.
 
+fclone-functions
+Common Report Var(flag_clone_functions) Init(1)
+Allow the compiler to clone functions to facilitate certain optimizations.
+Enabled by default.
+
 fcombine-stack-adjustments
 Common Report Var(flag_combine_stack_adjustments) Optimization
 Looks for opportunities to reduce stack adjustments and stack references.

@@ -414,6 +414,15 @@ decl_attributes (tree *node, tree attributes, int flags)
 	attributes = tree_cons (get_identifier ("noclone"),  NULL, attributes);
     }
 
+  /* If the user passed -fno-clone-functions, all functions should be treated
+     as "noclone" */
+  if (TREE_CODE (*node) == FUNCTION_DECL
+      && !flag_clone_functions)
+    {
+      if (lookup_attribute ("noclone", attributes) == NULL)
+	attributes = tree_cons (get_identifier ("noclone"),  NULL, attributes);
+    }
+
   targetm.insert_attributes (*node, &attributes);
 
   for (a = attributes; a; a = TREE_CHAIN (a))
