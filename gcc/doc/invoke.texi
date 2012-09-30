@@ -552,6 +552,7 @@ Objective-C and Objective-C++ Dialects}.
 -fassociative-math  -fauto-profile  -fauto-profile[=@var{path}]
 -fauto-inc-dec  -fbranch-probabilities
 -fcaller-saves
+-fclone-functions
 -fcombine-stack-adjustments  -fconserve-stack
 -ffold-mem-offsets
 -fcompare-elim  -fcprop-registers  -fcrossjumping
@@ -13420,6 +13421,15 @@ Tracks stack adjustments (pushes and pops) and stack memory references
 and then tries to find ways to combine them.
 
 Enabled by default at @option{-O1} and higher.
+
+@opindex fno-clone-functions
+@item -fno-clone-functions
+Forbid the implicit cloning of functions implicit in certain
+optimizations.  This also effectively will disable any optimization
+which wishes to clone functions, equivalent to each function having
+the ``noclone'' attribute.  This allows the prevention of the
+dissociation of a piece of text from an intelligible and expected
+symbol name, which may hamper debugging and tracing.
 
 @opindex fipa-ra
 @item -fipa-ra
