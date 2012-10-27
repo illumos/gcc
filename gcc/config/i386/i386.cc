@@ -1158,6 +1158,7 @@ ix86_function_regparm (const_tree type, const_tree decl)
 	 and callee not, or vice versa.  Instead look at whether the callee
 	 is optimized or not.  */
       if (target && opt_for_fn (target->decl, optimize)
+	  && !flag_strict_calling_conventions
 	  && !(profile_flag && !flag_fentry))
 	{
 	  if (target->local && target->can_change_signature)
@@ -1254,6 +1255,7 @@ ix86_function_sseregparm (const_tree type, const_tree decl, bool warn)
       /* TARGET_SSE_MATH */
       && (target_opts_for_fn (target->decl)->x_ix86_fpmath & FPMATH_SSE)
       && opt_for_fn (target->decl, optimize)
+      && !flag_strict_calling_conventions
       && !(profile_flag && !flag_fentry))
     {
       if (target->local && target->can_change_signature)
