@@ -5696,6 +5696,12 @@ with multiple statement cases using flow-sensitive points-to information.
 Only warns when the converted pointer is dereferenced.
 Does not warn about incomplete types.
 
+@item -fstrict-calling-conventions
+@opindex fstrict-calling-conventions
+Use strict ABI calling conventions even with local functions.
+This disable certain optimizations that may cause GCC to call local
+functions in a manner other than that described by the ABI.
+
 @item -Wstrict-overflow
 @itemx -Wstrict-overflow=@var{n}
 @opindex Wstrict-overflow
