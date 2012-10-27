@@ -8645,6 +8645,12 @@ int f() @{
 The @option{-fstrict-aliasing} option is enabled at levels
 @option{-O2}, @option{-O3}, @option{-Os}.
 
+@item -fstrict-calling-conventions
+@opindex fstrict-calling-conventions
+Use strict ABI calling conventions even with local functions.
+This disable certain optimizations that may cause GCC to call local
+functions in a manner other than that described by the ABI.
+
 @item -fstrict-overflow
 @opindex fstrict-overflow
 Allow the compiler to assume strict signed overflow rules, depending

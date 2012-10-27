@@ -2341,6 +2341,10 @@ fstrict-aliasing
 Common Report Var(flag_strict_aliasing) Optimization
 Assume strict aliasing rules apply.
 
+fstrict-calling-conventions
+Common Report Var(flag_strict_calling_conventions) Init(1)
+Use strict ABI calling conventions even for static functions
+
 fstrict-overflow
 Common Report Var(flag_strict_overflow) Optimization
 Treat signed overflow as undefined.
