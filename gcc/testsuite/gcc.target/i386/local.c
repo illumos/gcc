@@ -1,5 +1,6 @@
 /* { dg-do compile } */
-/* { dg-options "-O2 -funit-at-a-time" } */
+/* { dg-options "-O2 -funit-at-a-time -fno-strict-calling-conventions" { target ilp32 } } */
+/* { dg-options "-O2 -funit-at-a-time" { target lp64 } } */
 /* { dg-final { scan-assembler "magic\[^\\n\]*eax" { target ilp32 } } } */
 /* { dg-final { scan-assembler "magic\[^\\n\]*edi" { target lp64 } } } */
 
