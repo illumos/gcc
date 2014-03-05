@@ -2600,6 +2600,7 @@ if test $in_tree_ld != yes ; then
 	    -e 's,^.*: 5\.[0-9][0-9]*-\([0-9]\.[0-9][0-9]*\).*$,\1,p'`
 	  ld_vers_major=`expr "$ld_vers" : '\([0-9]*\)'`
 	  ld_vers_minor=`expr "$ld_vers" : '[0-9]*\.\([0-9]*\)'`
+	  ld_vers_isillumos=`echo "$ld_ver" | grep '(illumos)'`
 	fi
 	;;
     esac
@@ -4984,6 +4985,8 @@ elif test x$gcc_cv_ld != x; then
       *-*-solaris2*)
         # Sun ld has various bugs in .eh_frame_hdr support before version 1.2251.
         if test "$ld_vers_major" -gt 1 || test "$ld_vers_minor" -ge 2251; then
+          gcc_cv_ld_eh_frame_hdr=yes
+        elif test "$ld_vers_minor" -ge 1735 && test -n "$ld_vers_isillumos"; then
           gcc_cv_ld_eh_frame_hdr=yes
         fi
         ;;
