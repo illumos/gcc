@@ -74,17 +74,11 @@ gcc_init_libintl (void)
 
   if (!strcmp (open_quote, "`") && !strcmp (close_quote, "'"))
     {
-      /* Untranslated quotes that it may be possible to replace with
-	 U+2018 and U+2019; but otherwise use "'" instead of "`" as
-	 opening quote.  */
+      /*
+       * open_quote is ` purely for ease of translation.  If they aren't
+       * translated, use ' for both
+       */
       open_quote = "'";
-#if defined HAVE_LANGINFO_CODESET
-      if (locale_utf8)
-	{
-	  open_quote = "\xe2\x80\x98";
-	  close_quote = "\xe2\x80\x99";
-	}
-#endif
     }
 }
 
@@ -145,6 +139,3 @@ get_spaces (const char *str)
    spaces[len] = '\0';
    return spaces;
 }
-
-
-
