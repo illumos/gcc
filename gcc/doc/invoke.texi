@@ -13896,6 +13896,10 @@ dynamically linked.  This is the default code model.
 Generate code for the large code model.  This makes no assumptions about
 addresses and sizes of sections.  Programs can be statically linked only.
 
+@item -msave-args
+@opindex msave-args
+Save integer-sized arguments on the stack on function entry.
+
 @item -mstrict-align
 @opindex mstrict-align
 Avoid generating memory accesses that may not be aligned on a natural object

@@ -505,6 +505,16 @@ mtls-direct-seg-refs
 Target Report Mask(TLS_DIRECT_SEG_REFS)
 Use direct references against %gs when accessing tls data.
 
+msave-args
+Target Report Mask(SAVE_ARGS)
+Save integer arguments on the stack at function entry
+
+mforce-save-regs-using-mov
+Target Report Mask(FORCE_SAVE_REGS_USING_MOV)
+Save registers using push in function prologues.  This is intentionally
+undocumented and used for msave-args testing.
+
+
 mtune=
 Target RejectNegative Joined Var(ix86_tune_string)
 Schedule code for given CPU.
