@@ -2555,6 +2555,11 @@ enum avx_u128_state
 
    saved frame pointer			if frame_pointer_needed
 					<- HARD_FRAME_POINTER
+
+   [-msave-args]			<- arg_save_offset
+
+   [saveargs padding]
+
    [saved regs]
 					<- reg_save_offset
    [padding0]
@@ -2588,6 +2593,7 @@ enum avx_u128_state
   */
 struct GTY(()) ix86_frame
 {
+  int nmsave_args;
   int nsseregs;
   int nregs;
   int va_arg_size;
@@ -2599,6 +2605,7 @@ struct GTY(()) ix86_frame
   HOST_WIDE_INT hard_frame_pointer_offset;
   HOST_WIDE_INT stack_pointer_offset;
   HOST_WIDE_INT hfp_save_offset;
+  HOST_WIDE_INT arg_save_offset;
   HOST_WIDE_INT reg_save_offset;
   HOST_WIDE_INT stack_realign_allocate;
   HOST_WIDE_INT stack_realign_offset;
