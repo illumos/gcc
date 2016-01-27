@@ -170,8 +170,15 @@ along with GCC; see the file COPYING3.  If not see
 #define SUPPORTS_INIT_PRIORITY HAVE_INITFINI_ARRAY_SUPPORT
 
 #undef STARTFILE_ARCH_SPEC
-#define STARTFILE_ARCH_SPEC "%{ansi:values-Xc.o%s} \
-			    %{!ansi:values-Xa.o%s}"
+#define STARTFILE_ARCH_SPEC "%{std=c1x|std=gnu1x:values-Xc.o%s values-xpg6.o%s; \
+			       std=c11|std=gnu11:values-Xc.o%s values-xpg6.o%s; \
+			       std=c99|std=gnu99:values-Xc.o%s values-xpg6.o%s; \
+			       std=c9x|std=gnu9x:values-Xc.o%s values-xpg6.o%s; \
+			       std=c++0x|std=gnu++0x:values-Xc.o%s; \
+			       std=c++11|std=gnu++11:values-Xc.o%s; \
+			       std=c++03|std=gnu++03:values-Xc.o%s; \
+			       :values-Xa.o%s}"
+
 
 #if defined(HAVE_LD_PIE) && defined(HAVE_SOLARIS_CRTS)
 #define STARTFILE_CRTBEGIN_SPEC "%{static:crtbegin.o%s; \
