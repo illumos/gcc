@@ -12105,7 +12105,8 @@ indirect_thunk_name (char name[32], unsigned int regno,
   if (regno != INVALID_REGNUM && regno != CX_REG && ret_p)
     gcc_unreachable ();
 
-  if (USE_HIDDEN_LINKONCE)
+  if (USE_HIDDEN_LINKONCE ||
+      (cfun && cfun->machine->indirect_branch_type == indirect_branch_thunk_extern))
     {
       const char *bnd = need_bnd_p ? "_bnd" : "";
       const char *ret = ret_p ? "return" : "indirect";
