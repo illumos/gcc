@@ -6281,6 +6281,15 @@ ix86_option_override_internal (bool main_args_p,
       free (str);
     }
 
+  /*
+   * We never want to omit the frame pointer, regardless of the optimisation
+   * level or options to gcc - we like stack traces too much and it is of
+   * questionable benefit anyway, even on i386.
+   */
+
+  flag_omit_frame_pointer = 0;
+  opts->x_flag_omit_frame_pointer = 0;
+
   /* Save the initial options in case the user does function specific
      options.  */
   if (main_args_p)
