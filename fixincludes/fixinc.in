@@ -212,7 +212,7 @@ search_dirs=""
 
 while [ -n "$dirs" ] && [ $levels -gt 0 ]
 do
-  levels=`expr $levels - 1`
+  levels=`expr $levels - 1; true`
   newdirs=
   for d in $dirs
   do
@@ -341,7 +341,7 @@ if $LINKS; then
           cd $LIB
           while [ x$dirname != x ]; do
             component=`echo $dirname | sed -e 's|/.*$||'`
-            mkdir $component >/dev/null 2>&1
+            mkdir -p $component >/dev/null 2>&1
             cd $component
             dirmade=$dirmade/$component
             dirname=`echo $dirname | sed -e 's|[^/]*//*||'`
