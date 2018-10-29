@@ -20579,7 +20579,6 @@ $as_echo "$glibcxx_glibc217" >&6; }
         ac_has_nanosleep=yes
         ;;
       solaris*)
-        GLIBCXX_LIBS="$GLIBCXX_LIBS -lrt"
         ac_has_clock_monotonic=yes
         ac_has_clock_realtime=yes
         ac_has_nanosleep=yes
