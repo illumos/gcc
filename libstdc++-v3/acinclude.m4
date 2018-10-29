@@ -1429,7 +1429,6 @@ AC_DEFUN([GLIBCXX_ENABLE_LIBSTDCXX_TIME], [
         ac_has_nanosleep=yes
         ;;
       solaris*)
-        GLIBCXX_LIBS="$GLIBCXX_LIBS -lrt"
         ac_has_clock_monotonic=yes
         ac_has_clock_realtime=yes
         ac_has_nanosleep=yes
