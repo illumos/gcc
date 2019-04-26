@@ -507,7 +507,7 @@ Use direct references against %gs when accessing tls data.
 
 msave-args
 Target Report Mask(SAVE_ARGS)
-Save integer arguments on the stack at function entry
+Save integer arguments on the stack at function entry.
 
 mforce-save-regs-using-mov
 Target Report Mask(FORCE_SAVE_REGS_USING_MOV)
