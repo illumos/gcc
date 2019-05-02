@@ -1,5 +1,6 @@
 /* { dg-do compile { target { { i?86-*-* x86_64-*-* } && lp64 } } } */
 /* { dg-options "-fdump-rtl-pro_and_epilogue" } */
+/* { dg-skip-if "RTL in test doesn't save arguments" { *-*-* } "-msave-args" "" } */
 
 /* Lightly-modified dump of test.c.274r.split2 for x86_64.  */
 
