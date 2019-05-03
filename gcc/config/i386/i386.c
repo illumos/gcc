@@ -5899,7 +5899,7 @@ ix86_option_override_internal (bool main_args_p,
 	   & ~opts->x_ix86_isa_flags_explicit);
 
   if (!TARGET_64BIT_P (opts->x_ix86_isa_flags) && TARGET_SAVE_ARGS)
-    error ("-msave-args makes no sense in the 32-bit mode");
+    error ("-msave-args only works in x32 or 64-bit mode");
 
   /* Validate -mpreferred-stack-boundary= value or default it to
      PREFERRED_STACK_BOUNDARY_DEFAULT.  */
