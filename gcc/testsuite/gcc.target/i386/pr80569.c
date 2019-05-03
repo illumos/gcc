@@ -1,6 +1,7 @@
 /* PR target/80569 */
 /* { dg-do assemble } */
 /* { dg-options "-O2 -m16 -march=haswell" } */
+/* { dg-skip-if "" { *-*-* } "-msave-args" "" } */
 
 void load_kernel(void *setup_addr)
 {
