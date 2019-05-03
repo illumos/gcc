@@ -1,5 +1,6 @@
 /* PR tree-optimization/78691 */
 /* { dg-options "-Os -m16" } */
+/* { dg-skip-if "" { *-*-* } "-msave-args" "" } */
 
 int fn1(char *p1, char *p2) {
   int a;
