@@ -96,7 +96,7 @@ int __RTL (startwith ("pro_and_epilogue")) test_1 (int i, int j, int k)
     (cnote 31 NOTE_INSN_DELETED)
   ) ;; insn-chain
   (crtl
-    (return_rtx 
+    (return_rtx
       (reg/i:SI ax)
     ) ;; return_rtx
   ) ;; crtl
@@ -108,4 +108,3 @@ int __RTL (startwith ("pro_and_epilogue")) test_1 (int i, int j, int k)
 
 /* We expect a jump_insn to "simple_return".  */
 /* { dg-final { scan-rtl-dump-times "simple_return" 2 "pro_and_epilogue" } }  */
-
