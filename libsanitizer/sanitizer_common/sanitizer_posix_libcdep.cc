@@ -63,13 +63,13 @@ void ReleaseMemoryPagesToOS(uptr beg, uptr end) {
     // In the default Solaris compilation environment, madvise() is declared
     // to take a caddr_t arg; casting it to void * results in an invalid
     // conversion error, so use char * instead.
-    madvise((char *)beg_aligned, end_aligned - beg_aligned,
+    posix_madvise((char *)beg_aligned, end_aligned - beg_aligned,
             SANITIZER_MADVISE_DONTNEED);
 }
 
 bool NoHugePagesInRegion(uptr addr, uptr size) {
 #ifdef MADV_NOHUGEPAGE  // May not be defined on old systems.
-  return madvise((char *)addr, size, MADV_NOHUGEPAGE) == 0;
+  return  posix_madvise((char *)addr, size, MADV_NOHUGEPAGE) == 0;
 #else
   return true;
 #endif  // MADV_NOHUGEPAGE
@@ -77,9 +77,9 @@ bool NoHugePagesInRegion(uptr addr, uptr size) {
 
 bool DontDumpShadowMemory(uptr addr, uptr length) {
 #if defined(MADV_DONTDUMP)
-  return madvise((char *)addr, length, MADV_DONTDUMP) == 0;
+  return posix_madvise((char *)addr, length, MADV_DONTDUMP) == 0;
 #elif defined(MADV_NOCORE)
-  return madvise((char *)addr, length, MADV_NOCORE) == 0;
+  return posix_madvise((char *)addr, length, MADV_NOCORE) == 0;
 #else
   return true;
 #endif  // MADV_DONTDUMP
