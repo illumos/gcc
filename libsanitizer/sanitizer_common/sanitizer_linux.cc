@@ -929,7 +929,18 @@ ThreadLister::ThreadLister(pid_t pid) : pid_(pid), buffer_(4096) {
   char task_directory_path[80];
   internal_snprintf(task_directory_path, sizeof(task_directory_path),
                     "/proc/%d/task/", pid);
+#ifdef O_DIRECTORY
   descriptor_ = internal_open(task_directory_path, O_RDONLY | O_DIRECTORY);
+#else
+  struct stat st;
+  stat(task_directory_path, &st);
+  if (S_ISDIR(st.st_mode)) {
+    descriptor_ = internal_open(task_directory_path, O_RDONLY);
+  }
+  else {
+    descriptor_ = (uptr)-1; // Set error value defined in internal_iserror
+  }
+#endif
   if (internal_iserror(descriptor_)) {
     Report("Can't open /proc/%d/task for reading.\n", pid);
   }
