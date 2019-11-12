@@ -19,6 +19,9 @@
 #include "sanitizer_internal_defs.h"
 #include "sanitizer_platform.h"
 
+struct stat;
+struct dirent;
+
 namespace __sanitizer {
 extern unsigned struct_utsname_sz;
 extern unsigned struct_stat_sz;
@@ -337,6 +340,14 @@ struct __sanitizer_glob_t {
   uptr gl_offs;
   char **gl_pathp;
   int gl_pathn;
+  int gl_matchc;
+  int gl_flags;
+  struct stat **gl_statv;
+  void (*gl_closedir)(void *);
+  struct dirent *(*gl_readdir)(void *);
+  void *(*gl_opendir)(const char *);
+  int (*gl_lstat)(const char *, struct stat *);
+  int (*gl_stat)(const char *, struct stat *);
 };
 
 extern int glob_nomatch;
