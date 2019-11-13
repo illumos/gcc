@@ -46,7 +46,7 @@ func (gccgoToolchain) linker() string {
 }
 
 func (gccgoToolchain) ar() []string {
-	return envList("AR", "ar")
+	return envList("AR", "/usr/bin/gar")
 }
 
 func checkGccgoBin() {
