@@ -46,7 +46,7 @@ func (gccgoToolchain) linker() string {
 func (gccgoToolchain) ar() string {
 	ar := os.Getenv("AR")
 	if ar == "" {
-		ar = "ar"
+		ar = "/usr/bin/gar"
 	}
 	return ar
 }

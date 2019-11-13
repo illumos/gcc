@@ -187,7 +187,7 @@ func TestObjImporter(t *testing.T) {
 
 		runImporterTest(t, imp, initmap, &test)
 
-		cmd = exec.Command("ar", "cr", afile, ofile)
+		cmd = exec.Command("/usr/bin/gar", "cr", afile, ofile)
 		out, err = cmd.CombinedOutput()
 		if err != nil {
 			t.Logf("%s", out)
