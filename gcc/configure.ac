@@ -2551,7 +2551,7 @@ foo:	.long	25
 	leal	foo@NTPOFF(%ecx), %eax'
 	tls_first_major=2
 	tls_first_minor=14
-	tls_as_opt=--fatal-warnings
+	tls_as_opt="-32 --fatal-warnings"
 	;;
   x86_64-*-*)
     conftest_s='
