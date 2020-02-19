@@ -196,16 +196,16 @@ along with GCC; see the file COPYING3.  If not see
    executable programs.  */
 #undef STARTFILE_ARCH_SPEC
 #define STARTFILE_ARCH_SPEC \
-  "%{!shared:%{!symbolic: \
+  "%{!shared:%{!symbolic:%{!G: \
      %{ansi|std=c*|std=iso9899\\:199409:values-Xc.o%s; :values-Xa.o%s} \
-     %{std=c90|std=gnu90:values-xpg4.o%s; :values-xpg6.o%s}}}"
+     %{std=c90|std=gnu90:values-xpg4.o%s; :values-xpg6.o%s}}}}"
 
 #if defined(HAVE_LD_PIE) && defined(HAVE_SOLARIS_CRTS)
 #define STARTFILE_CRTBEGIN_SPEC "%{static:crtbegin.o%s; \
-				   shared|" PIE_SPEC ":crtbeginS.o%s; \
+				   shared|G|" PIE_SPEC ":crtbeginS.o%s; \
 				   :crtbegin.o%s}"
 #else
-#define STARTFILE_CRTBEGIN_SPEC	"%{shared:crtbeginS.o%s;:crtbegin.o%s}"
+#define STARTFILE_CRTBEGIN_SPEC	"%{shared|G:crtbeginS.o%s;:crtbegin.o%s}"
 #endif
 
 #if ENABLE_VTABLE_VERIFY
@@ -234,28 +234,28 @@ along with GCC; see the file COPYING3.  If not see
 #ifdef HAVE_SOLARIS_CRTS
 /* Since Solaris 11.4, the OS delivers crt1.o, crti.o, and crtn.o, with a hook
    for compiler-dependent stuff like profile handling.  */
-#define STARTFILE_SPEC "%{!shared:%{!symbolic: \
+#define STARTFILE_SPEC "%{!shared:%{!symbolic:%{!G: \
 			  crt1.o%s \
 			  %{p:%e-p is not supported; \
 			    pg:crtpg.o%s gmon.o%s; \
-			      :crtp.o%s}}} \
+			      :crtp.o%s}}}} \
 			crti.o%s %(startfile_arch) %(startfile_crtbegin) \
 			%(startfile_vtv)"
 #else
-#define STARTFILE_SPEC "%{!shared:%{!symbolic: \
+#define STARTFILE_SPEC "%{!shared:%{!symbolic:%{!G: \
 			  %{p:mcrt1.o%s; \
                             pg:gcrt1.o%s gmon.o%s; \
-                              :crt1.o%s}}} \
+                              :crt1.o%s}}}} \
 			crti.o%s %(startfile_arch) %(startfile_crtbegin) \
 			%(startfile_vtv)"
 #endif
 
 #if defined(HAVE_LD_PIE) && defined(HAVE_SOLARIS_CRTS)
 #define ENDFILE_CRTEND_SPEC "%{static:crtend.o%s; \
-			       shared|" PIE_SPEC ":crtendS.o%s; \
+			       shared|G|" PIE_SPEC ":crtendS.o%s; \
 			       :crtend.o%s}"
 #else
-#define ENDFILE_CRTEND_SPEC "%{shared:crtendS.o%s;:crtend.o%s}"
+#define ENDFILE_CRTEND_SPEC "%{shared|G:crtendS.o%s;:crtend.o%s}"
 #endif
 
 #undef  ENDFILE_SPEC
@@ -265,8 +265,7 @@ along with GCC; see the file COPYING3.  If not see
 
 #undef LINK_ARCH32_SPEC_BASE
 #define LINK_ARCH32_SPEC_BASE \
-  "%{G:-G} \
-   %{YP,*} \
+  "%{YP,*} \
    %{R*} \
    %{!YP,*:%{p|pg:-Y P,%R/usr/lib/libp%R/lib:%R/usr/lib} \
 	   %{!p:%{!pg:-Y P,%R/lib:%R/usr/lib}}}"
@@ -278,8 +277,7 @@ along with GCC; see the file COPYING3.  If not see
    ARCH64_SUBDIR appended to the paths.  */
 #undef LINK_ARCH64_SPEC_BASE
 #define LINK_ARCH64_SPEC_BASE \
-  "%{G:-G} \
-   %{YP,*} \
+  "%{YP,*} \
    %{R*} \
    %{!YP,*:%{p|pg:-Y P,%R/usr/lib/libp/" ARCH64_SUBDIR ":%R/lib/" ARCH64_SUBDIR ":%R/usr/lib/" ARCH64_SUBDIR "}	\
 	   %{!p:%{!pg:-Y P,%R/lib/" ARCH64_SUBDIR ":%R/usr/lib/" ARCH64_SUBDIR "}}}"
@@ -365,7 +363,7 @@ along with GCC; see the file COPYING3.  If not see
 #ifndef USE_GLD
 /* With Sun ld, use mapfile to enforce direct binding to libgcc_s unwinder.  */
 #define LINK_LIBGCC_MAPFILE_SPEC \
-  "%{shared|shared-libgcc:-M %slibgcc-unwind.map}"
+  "%{shared|shared-libgcc|G:-M %slibgcc-unwind.map}"
 #else
 /* GNU ld doesn't support direct binding.  */
 #define LINK_LIBGCC_MAPFILE_SPEC ""
@@ -382,9 +380,9 @@ along with GCC; see the file COPYING3.  If not see
 #undef  LINK_SPEC
 #define LINK_SPEC \
   "%{h*} %{v:-V} \
-   %{!shared:%{!static:%{rdynamic: " RDYNAMIC_SPEC "}}} \
+   %{!shared:%{!static:%{!G:%{rdynamic: " RDYNAMIC_SPEC "}}}} \
    %{static:-dn -Bstatic} \
-   %{shared:-G -dy %{!mimpure-text:-z text}} " \
+   %{shared|G:-G -dy %{!mimpure-text:-z text}} " \
    LINK_LIBGCC_MAPFILE_SPEC LINK_CLEARCAP_SPEC " \
    %{symbolic:-Bsymbolic -G -dy -z text} \
    %(link_arch) \
