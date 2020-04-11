@@ -4357,8 +4357,10 @@ ix86_option_override_internal (bool main_args_p,
       &= ~((OPTION_MASK_ISA_BMI | OPTION_MASK_ISA_BMI2 | OPTION_MASK_ISA_TBM)
 	   & ~opts->x_ix86_isa_flags_explicit);
 
-  if (!TARGET_64BIT_P (opts->x_ix86_isa_flags) && TARGET_SAVE_ARGS)
-    error ("-msave-args only works in x32 or 64-bit mode");
+  if (!TARGET_64BIT_P (opts->x_ix86_isa_flags) && TARGET_SAVE_ARGS) {
+    warning (0, "-msave-args only works in x32 or 64-bit mode; ignoring");
+    opts->x_target_flags &= ~MASK_SAVE_ARGS;
+  }
 
   /* Validate -mpreferred-stack-boundary= value or default it to
      PREFERRED_STACK_BOUNDARY_DEFAULT.  */
