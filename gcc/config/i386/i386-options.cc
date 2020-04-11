@@ -2788,8 +2788,10 @@ ix86_option_override_internal (bool main_args_p,
 	&= ~(OPTION_MASK_ISA2_AVX5124FMAPS | OPTION_MASK_ISA2_AVX5124VNNIW);
     }
 
-  if (!TARGET_64BIT_P (opts->x_ix86_isa_flags) && TARGET_SAVE_ARGS)
-    error ("-msave-args only works in x32 or 64-bit mode");
+  if (!TARGET_64BIT_P (opts->x_ix86_isa_flags) && TARGET_SAVE_ARGS) {
+    warning (0, "-msave-args only works in x32 or 64-bit mode; ignoring");
+    opts->x_ix86_target_flags &= ~OPTION_MASK_SAVE_ARGS;
+  }
 
   /* Validate -mpreferred-stack-boundary= value or default it to
      PREFERRED_STACK_BOUNDARY_DEFAULT.  */
