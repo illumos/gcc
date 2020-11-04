@@ -259,3 +259,20 @@ along with GCC; see the file COPYING3.  If not see
 #ifndef USE_GLD
 #define USE_HIDDEN_LINKONCE 0
 #endif
+
+/*
+ * As of 5788, the illumos libc includes support for the stack protector
+ * __stack_chk_fail() function and for the __stack_chk_guard variable.
+ * That means that, for most cases, no extra objects need to be linked in
+ * when compiling with one of the -fstack-protector options.
+ * However, for 32-bit PIC/PIE objects, the gcc stack protector emits a
+ * function call to __stack_chk_fail_local(); this symbol is provided in
+ * illumos via the libssp_ns.a object. The spec below includes this in the
+ * link when appropriate.
+ */
+#if defined(TARGET_LIBC_PROVIDES_SSP)
+#define LINK_SSP_SPEC "%{fstack-protector|fstack-protector-all|" \
+		       "fstack-protector-strong|fstack-protector-explicit:" \
+		       DEF_ARCH32_SPEC("-lssp_ns") \
+		       "}"
+#endif
