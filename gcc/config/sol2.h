@@ -85,6 +85,7 @@ along with GCC; see the file COPYING3.  If not see
   do {							\
     builtin_define_std ("unix");			\
     builtin_define_std ("sun");				\
+    builtin_define ("__illumos__");			\
     builtin_define ("__svr4__");			\
     builtin_define ("__SVR4");				\
     builtin_assert ("system=unix");			\
