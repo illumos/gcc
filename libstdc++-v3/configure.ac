@@ -655,6 +655,11 @@ done
 tmake_file="${tmake_file_}"
 AC_SUBST(tmake_file)
 
+case "${target}" in *-*-solaris2*)
+	EXTRA_CFLAGS="$EXTRA_CFLAGS -D_TS_ERRNO"
+	EXTRA_CXX_FLAGS="$EXTRA_CXX_FLAGS -D_TS_ERRNO"
+esac
+
 # Add CET specific flags if Intel CET is enabled.
 GCC_CET_FLAGS(CET_FLAGS)
 EXTRA_CXX_FLAGS="$EXTRA_CXX_FLAGS $CET_FLAGS"
