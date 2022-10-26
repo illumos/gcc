@@ -2348,6 +2348,10 @@ fomit-frame-pointer
 Common Var(flag_omit_frame_pointer) Optimization
 When possible do not generate stack frames.
 
+fforce-omit-frame-pointer
+Common Var(flag_force_omit_frame_pointer) Optimization
+When possible, do not generate stack frames. Hinders debugging with mdb and dtrace.
+
 fopenmp-target-simd-clone
 Common Alias(fopenmp-target-simd-clone=,any,none)
 

@@ -3258,8 +3258,11 @@ ix86_option_override_internal (bool main_args_p,
    * questionable benefit anyway, even on i386.
    */
 
-  flag_omit_frame_pointer = 0;
-  opts->x_flag_omit_frame_pointer = 0;
+  if (flag_force_omit_frame_pointer == 0)
+    {
+      flag_omit_frame_pointer = 0;
+      opts->x_flag_omit_frame_pointer = 0;
+    }
 
   /* Save the initial options in case the user does function specific
      options.  */
