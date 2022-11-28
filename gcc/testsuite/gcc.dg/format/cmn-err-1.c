@@ -17,12 +17,17 @@ int main()
   int i = 1;
   long l = 2;
   llong ll = 3;
+  char hh = 4;
+  short h = 5;
 
   cmn_err_func (0, "%s", string);
   cmn_err_func (0, "%d %D %o %O %x %X %u", i, i, i, i, i, i, i);
   cmn_err_func (0, "%ld %lD %lo %lO %lx %lX %lu", l, l, l, l, l, l, l);
   cmn_err_func (0, "%lld %llD %llo %llO %llx %llX %llu",
 		ll, ll, ll, ll, ll, ll, ll);
+  cmn_err_func (0, "%hd %hD %ho %hO %hx %hX %hu", h, h, h, h, h, h, h);
+  cmn_err_func (0, "%hhd %hhD %hho %hhO %hhx %hhX %hhu",
+		hh, hh, hh, hh, hh, hh, hh);
   cmn_err_func (0, "%b %s", i, "\01Foo", string);
   cmn_err_func (0, "%p", string);
   cmn_err_func (0, "%16b", i, "\01Foo");
