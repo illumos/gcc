@@ -19,6 +19,8 @@ int main()
   llong ll = 3;
   char hh = 4;
   short h = 5;
+  size_t z = 6;
+  uintmax_t j = 7;
 
   cmn_err_func (0, "%s", string);
   cmn_err_func (0, "%d %D %o %O %x %X %u", i, i, i, i, i, i, i);
@@ -28,6 +30,8 @@ int main()
   cmn_err_func (0, "%hd %hD %ho %hO %hx %hX %hu", h, h, h, h, h, h, h);
   cmn_err_func (0, "%hhd %hhD %hho %hhO %hhx %hhX %hhu",
 		hh, hh, hh, hh, hh, hh, hh);
+  cmn_err_func (0, "%jd %jD %jo %jO %jx %jX %ju", j, j, j, j, j, j, j);
+  cmn_err_func (0, "%zd %zD %zo %zO %zx %zX %zu", z, z, z, z, z, z, z);
   cmn_err_func (0, "%b %s", i, "\01Foo", string);
   cmn_err_func (0, "%p", string);
   cmn_err_func (0, "%16b", i, "\01Foo");
