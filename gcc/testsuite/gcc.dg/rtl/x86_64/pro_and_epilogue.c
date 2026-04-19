@@ -1,5 +1,6 @@
 /* { dg-do compile { target { { i?86-*-* x86_64-*-* } && lp64 } } } */
 /* { dg-options "-fdump-rtl-pro_and_epilogue" } */
+/* { dg-skip-if "RTL in test doesn't save arguments" { *-*-* } "-msave-args" "" } */
 
 /* Lightly-modified dump of test.c.274r.split2 for x86_64.  */
 
@@ -95,7 +96,7 @@ int __RTL (startwith ("pro_and_epilogue")) test_1 (int i, int j, int k)
     (cnote 31 NOTE_INSN_DELETED)
   ) ;; insn-chain
   (crtl
-    (return_rtx 
+    (return_rtx
       (reg/i:SI ax)
     ) ;; return_rtx
   ) ;; crtl
@@ -107,4 +108,3 @@ int __RTL (startwith ("pro_and_epilogue")) test_1 (int i, int j, int k)
 
 /* We expect a jump_insn to "simple_return".  */
 /* { dg-final { scan-rtl-dump-times "simple_return" 2 "pro_and_epilogue" } }  */
-

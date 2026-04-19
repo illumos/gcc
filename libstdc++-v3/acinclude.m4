@@ -2774,7 +2774,7 @@ dnl
 AC_DEFUN([GLIBCXX_ENABLE_CLOCALE], [
   GLIBCXX_ENABLE(clocale,auto,[[[=MODEL]]],
     [use MODEL for target locale package],
-    [permit generic|gnu|ieee_1003.1-2001|newlib|yes|no|auto])
+    [permit generic|gnu|ieee_1003.1-2001|newlib|dragonfly|yes|no|auto])
 
   # Deal with gettext issues.  Default to not using it (=no) until we detect
   # support for it later.  Let the user turn it off via --e/d, but let that

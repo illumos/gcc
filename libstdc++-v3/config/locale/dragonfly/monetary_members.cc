@@ -37,9 +37,35 @@ namespace std _GLIBCXX_VISIBILITY(default)
 {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
+  extern wchar_t lconv2wchar(char *conv, wchar_t def, locale_t __cloc);
+  extern char lconv2char(char *conv, char def);
+
 // This file might be compiled twice, but we only want to define the members
 // of money_base once.
 #if ! _GLIBCXX_USE_CXX11_ABI
+
+  wchar_t lconv2wchar(char *conv, wchar_t def, locale_t __cloc)
+  {
+    wchar_t w = def;
+    const size_t tlen = strlen(conv);
+    if (tlen == 1)
+      w = (wchar_t) conv[0];
+
+    int clen = mbtowc_l(&w, conv, tlen, __cloc);
+    if (clen <= 0) 
+      return def;
+    else 
+      return w;
+  }
+
+  char lconv2char(char *conv, char def)
+  {
+    wchar_t w = def;
+    const size_t tlen = strlen(conv);
+    if (tlen == 1)
+      w = (wchar_t) conv[0];
+    return w;
+  }
 
   // Construct and return valid pattern consisting of some combination of:
   // space none symbol sign value
@@ -283,7 +309,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 		}
 	      else
 		{
-	          _M_data->_M_thousands_sep = lc->mon_thousands_sep[0];
+		  _M_data->_M_thousands_sep = lconv2char(lc->mon_thousands_sep, ',');
 
 		  __len = strlen(__cgroup);
 		  if (__len)
@@ -437,7 +463,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 		}
 	      else
 		{
-	          _M_data->_M_thousands_sep = lc->mon_thousands_sep[0];
+		  _M_data->_M_thousands_sep = lconv2char(lc->mon_thousands_sep, ',');
 
 		  __len = strlen(__cgroup);
 		  if (__len)
@@ -624,8 +650,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 		}
 	      else
 		{
-		  _M_data->_M_thousands_sep =
-			(wchar_t)lc->mon_thousands_sep[0];
+		  _M_data->_M_thousands_sep = lconv2wchar(lc->mon_thousands_sep, L',', (locale_t)__cloc);
 		  __len = strlen(__cgroup);
 		  if (__len)
 		    {
@@ -784,8 +809,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 		}
 	      else
 		{
-		  _M_data->_M_thousands_sep =
-			(wchar_t)lc->mon_thousands_sep[0];
+		  _M_data->_M_thousands_sep = lconv2wchar(lc->mon_thousands_sep, L',', (locale_t)__cloc);
 		  __len = strlen(__cgroup);
 		  if (__len)
 		    {

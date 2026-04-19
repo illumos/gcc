@@ -31,16 +31,23 @@ along with GCC; see the file COPYING3.  If not see
 
 #include "c-family/c-pragma.h"
 
-/* cmn_err only accepts "l" and "ll".  */
+#define NO_FMT NULL, FMT_LEN_none, STD_C89
+
 static const format_length_info cmn_err_length_specs[] =
 {
+  { "h", FMT_LEN_h, STD_C89, "hh", FMT_LEN_hh, STD_C99, 0 },
   { "l", FMT_LEN_l, STD_C89, "ll", FMT_LEN_ll, STD_C89, 0 },
-  { NULL, FMT_LEN_none, STD_C89, NULL, FMT_LEN_none, STD_C89, 0 }
+  { "j", FMT_LEN_j, STD_C99, NO_FMT, 0 },
+  { "z", FMT_LEN_z, STD_C99, NO_FMT, 0 },
+  { NO_FMT, NO_FMT, 0 }
 };
 
 static const format_flag_spec cmn_err_flag_specs[] =
 {
+  { '0',  0, 0, 0, N_("'0' flag"),        N_("the '0' flag"),                     STD_C89 },
+  { '-',  0, 0, 0, N_("'-' flag"),        N_("the '-' flag"),                     STD_C89 },
   { 'w',  0, 0, 0, N_("field width"),     N_("field width in printf format"),     STD_C89 },
+  { 'p',  0, 0, 0, N_("precision"),       N_("precision in printf format"),       STD_C89 },
   { 'L',  0, 0, 0, N_("length modifier"), N_("length modifier in printf format"), STD_C89 },
   { 0, 0, 0, 0, NULL, NULL, STD_C89 }
 };
@@ -48,6 +55,7 @@ static const format_flag_spec cmn_err_flag_specs[] =
 
 static const format_flag_pair cmn_err_flag_pairs[] =
 {
+  { '0', '-', 1, 0 },
   { 0, 0, 0, 0 }
 };
 
@@ -56,22 +64,22 @@ static const format_char_info bitfield_string_type =
 
 static const format_char_info cmn_err_char_table[] =
 {
-  /* C89 conversion specifiers.  */
-  { "dD",  0, STD_C89, { T89_I,   BADLEN,  BADLEN,  T89_L,   T9L_LL,  BADLEN,  BADLEN,  BADLEN,  BADLEN  }, "w",  "",   NULL },
-  { "oOxX",0, STD_C89, { T89_UI,  BADLEN,  BADLEN,  T89_UL,  T9L_ULL, BADLEN,  BADLEN,  BADLEN,  BADLEN  }, "w",  "",   NULL },
-  { "u",   0, STD_C89, { T89_UI,  BADLEN,  BADLEN,  T89_UL,  T9L_ULL, BADLEN,  BADLEN,  BADLEN,  BADLEN  }, "w",  "",   NULL },
-  { "c",   0, STD_C89, { T89_C,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN  }, "w",  "",   NULL },
-  { "p",   1, STD_C89, { T89_V,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN  }, "w", "c",  NULL },
-  { "s",   1, STD_C89, { T89_C,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN  }, "w",  "cR", NULL },
-  { "b",   0, STD_C89, { T89_I,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN  }, "w",   "",   &bitfield_string_type },
+  /*                     none     hh       h        l        ll       L        z        t        j        H       D       DD */
+  { "dD",  0, STD_C89, { T89_I,   T99_SC,  T89_S,   T89_L,   T9L_LL,  BADLEN,  T99_SST, BADLEN,  T99_IM , BADLEN, BADLEN, BADLEN }, "-wp0", "",   NULL },
+  { "oOxX",0, STD_C89, { T89_UI,  T99_UC,  T89_US,  T89_UL,  T9L_ULL, BADLEN,  T99_ST,  BADLEN,  T99_UIM, BADLEN, BADLEN, BADLEN }, "-wp0", "",   NULL },
+  { "u",   0, STD_C89, { T89_UI,  T99_UC,  T89_US,  T89_UL,  T9L_ULL, BADLEN,  T99_ST,  BADLEN,  T99_UIM, BADLEN, BADLEN, BADLEN }, "-wp0", "",   NULL },
+  { "c",   0, STD_C89, { T89_C,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN , BADLEN, BADLEN, BADLEN }, "-w",   "",   NULL },
+  { "p",   1, STD_C89, { T89_V,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN , BADLEN, BADLEN, BADLEN }, "-w",   "c",  NULL },
+  { "s",   1, STD_C89, { T89_C,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN , BADLEN, BADLEN, BADLEN }, "-wp",  "cR", NULL },
+  { "b",   0, STD_C89, { T89_I,   BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN,  BADLEN , BADLEN, BADLEN, BADLEN }, "-w0",  "",   &bitfield_string_type },
   { NULL,  0, STD_C89, NOLENGTHS, NULL, NULL, NULL }
 };
 
 EXPORTED_CONST format_kind_info solaris_format_types[] = {
-  { "cmn_err",  cmn_err_length_specs,  cmn_err_char_table, "", NULL,
+  { "cmn_err",  cmn_err_length_specs,  cmn_err_char_table, "0-", NULL,
     cmn_err_flag_specs, cmn_err_flag_pairs,
     FMT_FLAG_ARG_CONVERT|FMT_FLAG_EMPTY_PREC_OK,
-    'w', 0, 0, 0, 'L', 0,
+    'w', 0, 'p', 0, 'L', 0,
     &integer_type_node, &integer_type_node
   }
 };
