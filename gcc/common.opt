@@ -1264,6 +1264,11 @@ fcode-hoisting
 Common Var(flag_code_hoisting) Optimization
 Enable code hoisting.
 
+fclone-functions
+Common Var(flag_clone_functions) Init(1)
+Allow the compiler to clone functions to facilitate certain optimizations.
+Enabled by default.
+
 fcombine-stack-adjustments
 Common Var(flag_combine_stack_adjustments) Optimization
 Looks for opportunities to reduce stack adjustments and stack references.
@@ -2427,6 +2432,10 @@ fomit-frame-pointer
 Common Var(flag_omit_frame_pointer) Optimization
 When possible do not generate stack frames.
 
+fforce-omit-frame-pointer
+Common Var(flag_force_omit_frame_pointer) Optimization
+When possible, do not generate stack frames. Hinders debugging with mdb and dtrace.
+
 fopenmp-target-simd-clone
 Common Alias(fopenmp-target-simd-clone=,any,none)
 
@@ -3028,6 +3037,10 @@ Does nothing.  Preserved for backward compatibility.
 fstrict-aliasing
 Common Var(flag_strict_aliasing) Optimization
 Assume strict aliasing rules apply.
+
+fstrict-calling-conventions
+Common Var(flag_strict_calling_conventions) Init(1)
+Use strict ABI calling conventions even for static functions
 
 fstrict-overflow
 Common

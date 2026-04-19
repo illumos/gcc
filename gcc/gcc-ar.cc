@@ -197,10 +197,10 @@ main (int ac, char **av)
 #endif
 
   /* Find the wrapped binutils program.  */
-  exe_name = find_a_file (&target_path, PERSONALITY, X_OK);
+  exe_name = find_a_file (&target_path, "g" PERSONALITY, X_OK);
   if (!exe_name)
     {
-      const char *real_exe_name = PERSONALITY;
+      const char *real_exe_name = "g" PERSONALITY;
 #ifdef CROSS_DIRECTORY_STRUCTURE
       real_exe_name = concat (target_machine, "-", PERSONALITY, NULL);
 #endif

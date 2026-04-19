@@ -85,6 +85,7 @@ along with GCC; see the file COPYING3.  If not see
   do {							\
     builtin_define_std ("unix");			\
     builtin_define_std ("sun");				\
+    builtin_define ("__illumos__");			\
     builtin_define ("__svr4__");			\
     builtin_define ("__SVR4");				\
     builtin_assert ("system=unix");			\
@@ -195,16 +196,22 @@ along with GCC; see the file COPYING3.  If not see
    executable programs.  */
 #undef STARTFILE_ARCH_SPEC
 #define STARTFILE_ARCH_SPEC \
-  "%{!shared:%{!symbolic: \
-     %{ansi|std=c*|std=iso9899\\:199409:values-Xc.o%s; :values-Xa.o%s} \
-     %{std=c90|std=gnu90:values-xpg4.o%s; :values-xpg6.o%s}}}"
+  "%{!shared:%{!symbolic:%{!G: \
+     %{ \
+	std=c89|std=c90|std=gnu89|std=gnu90:values-Xa.o%s; \
+	ansi|std=c*|std=iso9899\\:199409:values-Xc.o%s; \
+	:values-Xa.o%s} \
+     %{ \
+	std=c89|std=c90|std=gnu89|std=gnu90:; \
+	:values-xpg6.o%s \
+     }}}}"
 
 #if defined(HAVE_LD_PIE)
 #define STARTFILE_CRTBEGIN_SPEC "%{static:crtbegin.o%s; \
-				   shared|" PIE_SPEC ":crtbeginS.o%s; \
+				   shared|G|" PIE_SPEC ":crtbeginS.o%s; \
 				   :crtbegin.o%s}"
 #else
-#define STARTFILE_CRTBEGIN_SPEC	"crtbegin.o%s"
+#define STARTFILE_CRTBEGIN_SPEC	"%{shared|G:crtbeginS.o%s;:crtbegin.o%s}"
 #endif
 
 #if ENABLE_VTABLE_VERIFY
@@ -247,10 +254,10 @@ along with GCC; see the file COPYING3.  If not see
 #endif
 
 #define LIBASAN_EARLY_SPEC ASAN_REJECT_SPEC \
-  " %{!shared:libasan_preinit%O%s} \
-    %{static-libasan:%{!shared: -Bstatic "\
+  " %{!shared:%{!G:libasan_preinit%O%s}} \
+    %{static-libasan:%{!shared:%{!G: -Bstatic "\
     LD_WHOLE_ARCHIVE_OPTION " -lasan " LD_NO_WHOLE_ARCHIVE_OPTION \
-    " -Bdynamic}}%{!static-libasan:-z now -lasan}"
+    " -Bdynamic}}}%{!static-libasan:-z now -lasan}"
 
 /* Error out on -fsanitize=thread|leak.  */
 #define LIBTSAN_EARLY_SPEC "\
@@ -262,20 +269,20 @@ along with GCC; see the file COPYING3.  If not see
 #undef STARTFILE_SPEC
 /* Since Solaris 11.4, the OS delivers crt1.o, crti.o, and crtn.o, with a hook
    for compiler-dependent stuff like profile handling.  */
-#define STARTFILE_SPEC "%{!shared:%{!symbolic: \
+#define STARTFILE_SPEC "%{!shared:%{!symbolic:%{!G: \
 			  crt1.o%s \
 			  %{p:%e-p is not supported; \
 			    pg:crtpg.o%s gmon.o%s; \
-			      :crtp.o%s}}} \
+			      :crtp.o%s}}}} \
 			crti.o%s %(startfile_arch) %(startfile_crtbegin) \
 			%(startfile_vtv)"
 
 #if defined(HAVE_LD_PIE)
 #define ENDFILE_CRTEND_SPEC "%{static:crtend.o%s; \
-			       shared|" PIE_SPEC ":crtendS.o%s; \
+			       shared|G|" PIE_SPEC ":crtendS.o%s; \
 			       :crtend.o%s}"
 #else
-#define ENDFILE_CRTEND_SPEC "crtend.o%s"
+#define ENDFILE_CRTEND_SPEC "%{shared|G:crtendS.o%s;:crtend.o%s}"
 #endif
 
 #undef  ENDFILE_SPEC
@@ -285,8 +292,7 @@ along with GCC; see the file COPYING3.  If not see
 
 #undef LINK_ARCH32_SPEC_BASE
 #define LINK_ARCH32_SPEC_BASE \
-  "%{G:-G} \
-   %{YP,*} \
+  "%{YP,*} \
    %{R*} \
    %{!YP,*:%{p|pg:-Y P,%R/usr/lib/libp%R/lib:%R/usr/lib} \
 	   %{!p:%{!pg:-Y P,%R/lib:%R/usr/lib}}}"
@@ -298,8 +304,7 @@ along with GCC; see the file COPYING3.  If not see
    ARCH64_SUBDIR appended to the paths.  */
 #undef LINK_ARCH64_SPEC_BASE
 #define LINK_ARCH64_SPEC_BASE \
-  "%{G:-G} \
-   %{YP,*} \
+  "%{YP,*} \
    %{R*} \
    %{!YP,*:%{p|pg:-Y P,%R/usr/lib/libp/" ARCH64_SUBDIR ":%R/lib/" ARCH64_SUBDIR ":%R/usr/lib/" ARCH64_SUBDIR "}	\
 	   %{!p:%{!pg:-Y P,%R/lib/" ARCH64_SUBDIR ":%R/usr/lib/" ARCH64_SUBDIR "}}}"
@@ -382,7 +387,7 @@ along with GCC; see the file COPYING3.  If not see
 #if !defined(USE_GLD) && defined(ENABLE_SHARED_LIBGCC)
 /* With Sun ld, use mapfile to enforce direct binding to libgcc_s unwinder.  */
 #define LINK_LIBGCC_MAPFILE_SPEC \
-  "%{shared|shared-libgcc:-M %slibgcc-unwind.map}"
+  "%{shared|shared-libgcc|G:-M %slibgcc-unwind.map}"
 #else
 /* GNU ld doesn't support direct binding.  */
 #define LINK_LIBGCC_MAPFILE_SPEC ""
@@ -399,9 +404,9 @@ along with GCC; see the file COPYING3.  If not see
 #undef  LINK_SPEC
 #define LINK_SPEC \
   "%{h*} %{v:-V} \
-   %{!shared:%{!static:%{rdynamic: " RDYNAMIC_SPEC "}}} \
+   %{!shared:%{!static:%{!G:%{rdynamic: " RDYNAMIC_SPEC "}}}} \
    %{static:-dn -Bstatic} \
-   %{shared:-G -dy %{!mimpure-text:-z text}} " \
+   %{shared|G:-G -dy %{!mimpure-text:-z text}} " \
    LINK_LIBGCC_MAPFILE_SPEC LINK_CLEARCAP_SPEC " \
    %{symbolic:-Bsymbolic -G -dy -z text} \
    %(link_arch) \

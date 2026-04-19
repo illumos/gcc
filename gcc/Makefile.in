@@ -451,6 +451,7 @@ CPPINC = -I$(srcdir)/../libcpp/include
 
 CODYLIB = ../libcody/libcody.a
 CODYINC = -I$(srcdir)/../libcody
+NETLIBS = @NETLIBS@
 
 # Where to find decNumber
 enable_decimal_float = @enable_decimal_float@

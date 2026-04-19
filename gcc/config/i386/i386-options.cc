@@ -2775,6 +2775,11 @@ ix86_option_override_internal (bool main_args_p,
       opts->x_ix86_isa_flags2 |= avx512_isa_flags2;
     }
 
+  if (!TARGET_64BIT_P (opts->x_ix86_isa_flags) && TARGET_SAVE_ARGS) {
+    warning (0, "-msave-args only works in x32 or 64-bit mode; ignoring");
+    opts->x_ix86_target_flags &= ~OPTION_MASK_SAVE_ARGS;
+  }
+
   /* Validate -mpreferred-stack-boundary= value or default it to
      PREFERRED_STACK_BOUNDARY_DEFAULT.  */
   ix86_preferred_stack_boundary = PREFERRED_STACK_BOUNDARY_DEFAULT;
@@ -3241,6 +3246,18 @@ ix86_option_override_internal (bool main_args_p,
       char *str = xstrdup (opts->x_ix86_tune_memset_strategy);
       ix86_parse_stringop_strategy_string (str, true);
       free (str);
+    }
+
+  /*
+   * We never want to omit the frame pointer, regardless of the optimisation
+   * level or options to gcc - we like stack traces too much and it is of
+   * questionable benefit anyway, even on i386.
+   */
+
+  if (flag_force_omit_frame_pointer == 0)
+    {
+      flag_omit_frame_pointer = 0;
+      opts->x_flag_omit_frame_pointer = 0;
     }
 
   /* Save the initial options in case the user does function specific

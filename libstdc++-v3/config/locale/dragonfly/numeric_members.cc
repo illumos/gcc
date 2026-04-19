@@ -37,6 +37,9 @@ namespace std _GLIBCXX_VISIBILITY(default)
 {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
+  extern wchar_t lconv2wchar(char *conv, wchar_t def, locale_t __cloc);
+  extern char lconv2char(char *conv, char def);
+
   template<>
     void
     numpunct<char>::_M_initialize_numpunct(__c_locale __cloc)
@@ -86,7 +89,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	    }
 	  else
 	    {
-	      _M_data->_M_thousands_sep = lc->thousands_sep[0];
+	      _M_data->_M_thousands_sep = lconv2char(lc->thousands_sep, ',');
 
 	      const char* __src = lc->grouping;
 	      const size_t __len = strlen(__src);
@@ -185,7 +188,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	    }
 	  else
 	    {
-	      _M_data->_M_thousands_sep = (wchar_t)lc->thousands_sep[0];
+	      _M_data->_M_thousands_sep = lconv2wchar(lc->thousands_sep, L',', (locale_t)__cloc);
 
   	      const char* __src = lc->grouping;
 	      const size_t __len = strlen(__src);

@@ -574,6 +574,7 @@ Objective-C and Objective-C++ Dialects}.
 -fassociative-math  -fauto-profile  -fauto-profile[=@var{path}]
 -fauto-inc-dec  -fbranch-probabilities
 -fcaller-saves
+-fclone-functions
 -fcombine-stack-adjustments  -fconserve-stack
 -ffold-mem-offsets
 -fcompare-elim  -fcprop-registers  -fcrossjumping
@@ -8183,6 +8184,12 @@ with multiple statement cases using flow-sensitive points-to information.
 Only warns when the converted pointer is dereferenced.
 Does not warn about incomplete types.
 
+@opindex fstrict-calling-conventions
+@item -fstrict-calling-conventions
+Use strict ABI calling conventions even with local functions.
+This disable certain optimizations that may cause GCC to call local
+functions in a manner other than that described by the ABI.
+
 @opindex Wstrict-overflow
 @opindex Wno-strict-overflow
 @item -Wstrict-overflow
@@ -13789,6 +13796,15 @@ Tracks stack adjustments (pushes and pops) and stack memory references
 and then tries to find ways to combine them.
 
 Enabled by default at @option{-O1} and higher.
+
+@opindex fno-clone-functions
+@item -fno-clone-functions
+Forbid the implicit cloning of functions implicit in certain
+optimizations.  This also effectively will disable any optimization
+which wishes to clone functions, equivalent to each function having
+the ``noclone'' attribute.  This allows the prevention of the
+dissociation of a piece of text from an intelligible and expected
+symbol name, which may hamper debugging and tracing.
 
 @opindex fipa-ra
 @item -fipa-ra
@@ -21819,6 +21835,10 @@ are @samp{tpidr_el0}, @samp{tpidrro_el0}, @samp{tpidr_el1}, @samp{tpidr_el2},
 The default setting is @samp{tpidr_el0}.  It is recommended to compile all
 code intended to interoperate with the same value of this option to avoid
 accessing a different thread pointer from the wrong exception level.
+
+@opindex msave-args
+@item -msave-args
+Save integer-sized arguments on the stack on function entry.
 
 @opindex mstrict-align
 @opindex mno-strict-align

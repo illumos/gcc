@@ -1446,6 +1446,15 @@ EXTRA_GCC_LIBS="$LIBS"
 LIBS="$save_LIBS"
 AC_SUBST(EXTRA_GCC_LIBS)
 
+# Solaris needs libsocket and libnsl for socket functions before 11.4.
+# C++ needs those for libcody.
+save_LIBS="$LIBS"
+LIBS=
+AX_LIB_SOCKET_NSL
+NETLIBS="$LIBS"
+LIBS="$save_LIBS"
+AC_SUBST(NETLIBS)
+
 # Some systems put ldexp and frexp in libm instead of libc; assume
 # they're both in the same place.  jcf-dump needs them.
 save_LIBS="$LIBS"
@@ -3199,11 +3208,12 @@ if test $in_tree_ld != yes ; then
 	# numbers can be used in ld.so.1 feature checks even if a different
 	# linker is configured.
 	ld_ver=`$gcc_cv_ld -V 2>&1`
-	if echo "$ld_ver" | grep 'Solaris Link Editors' > /dev/null; then
-	  ld_vers=`echo $ld_ver | sed -n \
-	    -e 's,^.*: 5\.[0-9][0-9]*-\([0-9]\.[0-9][0-9]*\).*$,\1,p'`
+	if echo "$ld_ver" | $EGREP 'Solaris Link Editors|Solaris ELF Utilities' > /dev/null; then
+	  ld_vers=`echo $ld_ver | /bin/sed -n \
+	    -E 's,^.*: (5|1[0-9])\.[0-9][0-9]*-([0-9]\.[0-9][0-9]*).*$,\2,p'`
 	  ld_vers_major=`expr "$ld_vers" : '\([0-9]*\)'`
 	  ld_vers_minor=`expr "$ld_vers" : '[0-9]*\.\([0-9]*\)'`
+	  ld_vers_isillumos=`echo "$ld_ver" | grep '(illumos)'`
 	fi
 	;;
     esac
@@ -6114,6 +6124,8 @@ elif test x$gcc_cv_ld != x; then
         # Sun ld has various bugs in .eh_frame_hdr support before version 1.2251.
         if test "$ld_vers_major" -gt 1 || test "$ld_vers_minor" -ge 2251; then
           gcc_cv_ld_eh_frame_hdr=yes
+        elif test "$ld_vers_minor" -ge 1735 && test -n "$ld_vers_isillumos"; then
+          gcc_cv_ld_eh_frame_hdr=yes
         fi
         ;;
     esac
@@ -6983,7 +6995,7 @@ AC_CACHE_CHECK(__stack_chk_fail in target C library,
 	 # realistically usable GNU/Hurd configurations.
 	 # All supported versions of musl provide it as well
 	 gcc_cv_libc_provides_ssp=yes;;
-       *-*-darwin* | *-*-freebsd* | *-*-netbsd*)
+       *-*-darwin* | *-*-freebsd* | *-*-netbsd* | *-*-solaris2*)
 	 AC_CHECK_FUNC(__stack_chk_fail,[gcc_cv_libc_provides_ssp=yes],
            [echo "no __stack_chk_fail on this target"])
         ;;
