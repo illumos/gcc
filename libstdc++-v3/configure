@@ -16635,7 +16635,7 @@ $as_echo "stdio (with POSIX read/write)" >&6; }
 if test "${enable_clocale+set}" = set; then :
   enableval=$enable_clocale;
       case "$enableval" in
-       generic|gnu|ieee_1003.1-2001|newlib|yes|no|auto) ;;
+       generic|gnu|ieee_1003.1-2001|newlib|dragonfly|yes|no|auto) ;;
        *) as_fn_error $? "Unknown argument to enable/disable clocale" "$LINENO" 5 ;;
 	  	        esac
 
